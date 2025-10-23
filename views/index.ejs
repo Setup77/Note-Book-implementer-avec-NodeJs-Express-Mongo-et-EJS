@@ -1,0 +1,55 @@
+<div class="container-fluid container-fluid-custom py-md-5 mb-5">
+  <main>
+    <div class="row  text-center justif-content-center">
+
+      <div class=" col-md-6  col-sm-9 col-lg-6  mb-6 mb-md-0">
+        <% if (locals.logout) { %>
+          <script>
+            document.addEventListener('DOMContentLoaded', function () {
+              const successMessage = "<%= locals.logout %>"; // Access the variable passed from the server
+
+              if (successMessage && successMessage !== 'null') { // Check for truthy value and not string 'null'
+                Swal.fire({
+                  title: 'Deconnecter!',
+                  text: successMessage,
+                  icon: 'success',
+                  timer: 7000,
+                  confirmButtonText: 'OK'
+                });
+              }
+            });
+          </script>
+
+          <% }
+
+            if (locals.accessDenied) { %>
+              <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                  const errorMessage = "<%= locals.accessDenied %>"; // Access the variable passed from the server
+
+                  if (errorMessage && errorMessage !== 'null') { // Check for truthy value and not string 'null'
+                    Swal.fire({
+                      title: 'Erreur!',
+                      text: errorMessage,
+                      icon: 'error',
+                      timer: 9000,
+                      confirmButtonText: 'OK'
+                    });
+                  }
+                });
+              </script>
+              <% } %>
+              
+
+                  <h1 class="display-2 fw-bold mb-4 position-relative home-title ">
+                   Écrivez vos pensées au fur et à mesure qu'elles vous viennent.
+                  </h1>
+                  <p class="fs-4 mb-4">
+                    Notes est une application de prise de notes gratuite et simple à utiliser, créée avec Node.Js, EJS et MongoDB.
+                  </p>
+                  <a href="/register" class="btn btn-primary btn-lg">Essayez Notes, c'est GRATUIT!</a>
+      </div>
+    </div>
+
+  </main>
+</div>

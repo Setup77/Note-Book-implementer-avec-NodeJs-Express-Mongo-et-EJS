@@ -1,0 +1,105 @@
+<div class="pb-5 mb-5 mx-4">
+ <%- include('boxModal.ejs') %>
+ <%- include('sweetBoxAlert.ejs') %>
+
+
+     <div class="col-md-2 mb-4 ">  <a href="#" title="Ajouter Note" class="btn btn-primary position-fixed top-0 end-0 m-3 z-3"
+            data-bs-toggle="modal" id="AddNOte" data-bs-target="#myModalAdd"> <i class="fas fa-upload fa-lg"></i> Publier</a> </div> 
+             
+
+        <div class="row">
+              
+          <% if (notes.length> 0) { for(var i=0; i < notes.length; i++) { %>
+                           
+             <div class="col-sm-3 mb-4">
+                <div class="card border-primary" style="min-height: 210px">
+                  <a href="/dashboard/item-<%= notes[i]._id %>"  class=" text-decoration-none m-1">
+                    <h5 class="card-title">
+                      <%= notes[i].title %>
+                    </h5>
+                  </a>
+                  <p class="card-text mt-3 p-1">
+                    <%= notes[i].body %>
+                  </p>
+                  <% if (connecter==1 && notes[i].user.toString()==userId.toString() ) { %>
+                    <div class="row">
+                      <div class="col-md-3">
+                        <a href="#" title="Edit" class="text-success ps-3" data-item-description="<%= notes[i].bodyToModify %>"
+                          data-item-id="<%= notes[i]._id %>" data-item-name="<%= notes[i].titleToModify %>"
+                          data-bs-toggle="modal" id="ModifyButton" data-bs-target="#myModalModify"><i
+                            class="fas fa-edit fa-lg"></i></a>
+                      </div>
+                       <div class="col-md-6"> 
+                         <small title="<%=  dayjs(notes[i].createdAt).format('D MMMM YYYY') %>"><%=  dayjs(notes[i].createdAt).fromNow() %></small>
+                        </div>   
+                         <div class="col-md-3">
+                        <a href="#" title="Delete" class="text-danger float-end pe-3 DelNote "
+                          data-item-id="<%= notes[i]._id %>" data-item-name="<%= notes[i].titleToModify %>"
+                          data-bs-toggle="modal" id="deleteButton" data-bs-target="#myModal"><i
+                            class="fas fa-trash-alt fa-lg"></i></a>
+                      </div>
+                    </div>
+                    <% } %>
+                </div>
+              </div>
+
+              <% }} else { %>
+
+                <div class="row">
+
+                  <div class="col-3">
+                    <img src="/img/human-3.svg" alt="Human pointing hand tos    rd a crate button">
+                  </div>
+                  <div class="col mt-md-4">
+                    <h2>Okay...</h2>
+                    <h4>Commençons par votre première note! <br /> <br />
+             
+                      <a href="#" title="Ajouter Note" class="btn btn-primary btn-block" 
+            data-bs-toggle="modal" id="AddNOte" data-bs-target="#myModalAdd"><i class="fas fa-upload fa-lg"></i> Créez-en un!</a>
+                    </h4>
+                  </div>
+                </div>
+
+                <% } %>
+        </div>
+
+
+        <% if(notes.length> perPage) { %>
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center mt-5">
+              <% if(current==1) { %>
+                <li class="page-item"><a class="page-link" href="#">Pécédent</a></li>
+                <% } else { %>
+                  <li class="page-item"><a class="page-link" href="/dashboard">Premier</a></li>
+                  <% } %>
+                    <% var i=(Number(current)> 5 ? Number(current) - 4 : 1) %>
+                      <% if (i !==1 ) { %>
+                        <li class="page-item"><a class="page-link" href="#">...</a></li>
+                        <% } %>
+                          <% for (; i <=(Number(current) + 4) && i <=pages; i++) { %>
+                            <% if(i==current ) { %>
+                              <li class="page-item"><a class="page-link" href="#">
+                                  <%= i %>
+                                </a></li>
+                              <% } else { %>
+                                <li class="page-item"><a class="page-link" href="/dashboard/page-<%= i %>">
+                                    <%= i %>
+                                  </a></li>
+                                <% } %>
+                                  <% if(i==Number(current) + 4 && i < pages) { %>
+                                    <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                    <% } %>
+                                      <% } %>
+                                        <% if (current==pages) { %>
+                                          <li class="page-item disabled"><a class="page-link">Dernier</a></li>
+                                          <% } else { %>
+                                            <li class="page-item"><a href="/dashboard/page-<%= pages %>"
+                                                class="page-link">Dernier</a></li>
+                                            <% } %>
+            </ul>
+          </nav>
+
+          <% } %>
+
+
+</div>

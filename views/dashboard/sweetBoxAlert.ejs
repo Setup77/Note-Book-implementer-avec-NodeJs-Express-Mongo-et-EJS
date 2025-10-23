@@ -1,0 +1,75 @@
+
+  <% if (GetVar==1 ) { %>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const successMessage = "Note bien ajouté";
+
+        if (successMessage && successMessage !== 'null') {
+          Swal.fire({
+            title: 'Réussi!',
+            text: successMessage,
+            icon: 'success',
+            timer: 5000,
+            confirmButtonText: 'OK'
+          });
+        }
+      });
+    </script>
+
+    <% } if (GetVar==2 ) { %>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const successMessage = "Note bien supprimé";
+
+          if (successMessage && successMessage !== 'null') {
+            Swal.fire({
+              title: 'Réussi!',
+              text: successMessage,
+              icon: 'warning',
+              timer: 5000,
+              confirmButtonText: 'OK'
+            });
+          }
+        });
+      </script>
+
+      <% } 
+      
+      if (GetVar==3 ) { %>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const successMessage = "Note bien modifié";
+
+          if (successMessage && successMessage !== 'null') {
+            Swal.fire({
+              title: 'Réussi!',
+              text: successMessage,
+              icon: 'success',
+              timer: 5000,
+              confirmButtonText: 'OK'
+            });
+          }
+        });
+      </script>
+
+      <% }
+
+           if (GetVar==4 ) { %>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const successMessage = "Connexion réussie 🎉";
+
+          if (successMessage && successMessage !== 'null') {
+            Swal.fire({
+              title: 'Réussi!',
+              text: successMessage,
+              icon: 'success',
+              timer: 5000,
+              confirmButtonText: 'OK'
+            });
+          }
+        });
+      </script>
+
+      <% }
+      %>

@@ -1,0 +1,99 @@
+<style>
+  .bg-glass {
+    background-color: hsla(0, 0%, 100%, 0.9) !important;
+    backdrop-filter: saturate(200%) blur(25px);
+  }
+</style>
+
+
+
+<div class="container-fluid container-fluid-custom py-md-5 mb-5">
+  <main>
+    <div class="row  justif-content-center">
+
+      <div class=" col-md-6  col-sm-9 col-lg-6  mb-6 mb-md-0">
+
+        <div class="card bg-glass">
+          <div class="card-body px-4 py-5 px-md-5">
+            <form action="/login" method="POST" class="form-horizontal well">
+              <!-- 2 column grid layout with text inputs for the first and last names -->
+              <div class="row">
+                <% if (user.email) { %>
+                  <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                      const successMessage = "<%= user.firstName %> bien enregistré"; // Access the variable passed from the server
+
+                      if (successMessage && successMessage !== 'null') { // Check for truthy value and not string 'null'
+                        Swal.fire({
+                          title: 'Inscrit!',
+                          text: successMessage,
+                          icon: 'success',
+                          timer: 7000,
+                          confirmButtonText: 'OK'
+                        });
+                      }
+                    });
+                  </script>
+                  <% } %>
+
+                    <% if (errors.emailExist) { %>
+
+                      <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                          const errorMessage = "<%= errors.emailExist %>"; // Access the variable passed from the server
+
+                          if (errorMessage && errorMessage !== 'null') { // Check for truthy value and not string 'null'
+                            Swal.fire({
+                              title: 'Erreur!',
+                              text: errorMessage,
+                              icon: 'error',
+                              timer: 7000,
+                              confirmButtonText: 'OK'
+                            });
+                          }
+                        });
+                      </script>
+                      <% } %>
+
+                        <h1 class="mb-3 h3 text-center ">Connexion</h1>
+              </div>
+
+              <!-- Email input -->
+              <div class="row mt-4 ">
+                <label class="form-label col-md-4 pull-left" for="form3Example3">Email address</label>
+                <div class="form-group col-md-8"> <input type="email" required="require" name="email" id="form3Example3"
+                    class="form-control" placeholder="Email" />
+                </div>
+              </div>
+
+              <!-- Password input -->
+              <div class="row mt-4 ">
+                <label class="form-label col-md-4 pull-left" for="form3Example4">Mot de passe</label>
+                <div class="form-group col-md-8"> <input type="password" required="require" name="password"
+                    id="form3Example4" class="form-control" placeholder=" Password" />
+                </div>
+              </div>
+              <div class="text-center">
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mb-4 mt-4 ">
+                  Se connecter
+                </button>
+
+                <!-- Register buttons -->
+
+                <p>Je n'ai pas encore de compte? <a href="/register">Inscription</a></p>
+
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="text-center"> <a href="/" class="btn btn-primary btn-block mb-4 mt-4 ">Explorer la note.</a> </div>
+      </div>
+
+
+    </div>
+</div>
+
+</main>
+</div>
