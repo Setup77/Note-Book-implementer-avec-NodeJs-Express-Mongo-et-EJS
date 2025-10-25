@@ -14,7 +14,8 @@ exports.homepage = async (req, res) =>{
         title : 'NodeJs Notes',
         description : 'Free NodeJs Notes app.',
         logout : GetVar,
-        accessDenied : ''
+        accessDenied : '',
+        page : 1
     }
 
 
@@ -32,7 +33,8 @@ exports.homepagelogout = async (req, res) =>{
         title : 'Logout - Notes',
         description : 'Free NodeJs Notes app.',
         logout : 'Vous êtes bien déconnecter',
-      accessDenied : ''
+      accessDenied : '',
+       page : 1
     }
 
       req.session.user = null;
@@ -48,7 +50,8 @@ exports.homepagelogout = async (req, res) =>{
 exports.profil = async (req, res) =>{
        const locals = {
         title : 'Profil - NodeJs Notes',
-        description : 'Free NodeJs Notes app.'
+        description : 'Free NodeJs Notes app.',
+         page : 5
     }
 
 
@@ -98,11 +101,14 @@ exports.users = async (req, res) =>{
     const locals = {
         title : 'Users - Notes',
         description : 'Free NodeJs Notes app.',
+         page : 4
     }
+      const currentUserId = req.session.user._id;
 
      try {
-    const users = await User.find().lean(); // lean() = renvoie des objets JS simples
+    //const users = await User.find().lean(); // lean() = renvoie des objets JS simples - Affiche tous les users
     //console.log(users);
+    const users = await User.find({ _id: { $ne: currentUserId } });
     res.render('users', {locals, users,GetVar }); // on envoie les utilisateurs à la vue EJS
   } catch (err) {
     console.error(err);

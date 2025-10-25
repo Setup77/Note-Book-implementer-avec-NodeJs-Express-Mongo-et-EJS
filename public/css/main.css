@@ -29,7 +29,6 @@ body{
     color:var(--bs-primary-rgb);
     font-weight: 300;
     font-size: 1.2rem;
-    background-image: url(../img/noise-bg.png);
 }
 
 h1,h2,h3,h4,h5,h6 {
@@ -37,9 +36,7 @@ font-family: 'Unbounded', cursive;
 font-weight: 800;
 }
 
-.container-fluid-custom {
-max-width: 1600px;
-}
+
 
 .btn{
     padding-left: 1.6rem;
@@ -92,16 +89,11 @@ max-width: 1600px;
 @media(min-width: 1200px) {
 .home {
 background: 
-   url('../img/human-1.svg') left bottom no-repeat,
-   url('../img/human-2.svg') right bottom no-repeat,
-   url('../img/noise-bg.svg') left top repeat,
+   url('../img/human-1.svg')  left bottom no-repeat,
+   url('../img/human-2.svg')  right bottom no-repeat,
+   url('../img/noise-bg.svg')  left top repeat, 
    var(--background-color);
 }
-
-.container-fluid-custom {
-    margin-left: 25%;
-    }
-
 }
 
 
@@ -122,5 +114,98 @@ background:
 .float-right{
     float: right !important;
 }
+
+#BoutonMenuMobiel{
+        display: none;
+      }
+
+  
+
+
+        /* --- NAVBAR --- */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1045;
+    }
+
+    .navbar-brand img {
+      height: 32px;
+    }
+
+    .search-bar {
+      width: 300px;
+    }
+
+    /* --- OFFCANVAS PERSONNALISÉ --- */
+    .offcanvas-start {
+      width: 200px;
+      background: rgba(33, 37, 41, 0.95); /* fond semi-transparent */
+      backdrop-filter: blur(10px); /* flou du fond */
+      transition: transform 0.4s ease-in-out;
+    }
+
+    /* Animation de slide plus douce */
+    .offcanvas.offcanvas-start.show {
+      transform: translateX(0) !important;
+    }
+
+    /* --- OVERLAY FLUO --- */
+    .offcanvas-backdrop.show {
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(3px);
+    }
+
+    /* Responsive */
+    @media (max-width: 991px) {
+      .search-bar {
+        width: 100%;
+        margin-top: 10px;
+      }
+       #BoutonMenuMobiel{
+        display: flex !important;
+      }
+    }
+
+    
+    /* --- End Offcanvas --- */
+
+    /*Login et inscription  */
+
+
+     .bg-glass {
+    background-color: hsla(0, 0%, 100%, 0.9) !important;
+    backdrop-filter: saturate(200%) blur(25px);
+  }
+
+    .form-control:focus {
+      box-shadow: 0 0 0 0.25rem rgba(116, 185, 255, 0.5);
+      border-color: #74b9ff;
+    }
+
+        .login-container {
+      min-height: 100vh;
+    }
+
+    .login-card {
+      max-width: 600px;
+      width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+      .home-card {
+      max-width: 700px;
+      width: 100%;
+    }
+    
+    /* Button publier après 1ere publication*/
+    #AddNote{
+      z-index: 3000 !important;
+      top: 8% !important;
+    }
+  
+
+
 
 

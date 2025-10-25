@@ -1,17 +1,17 @@
-<div class="pb-5 mb-5 mx-4">
+<div class="pb-5 mb-5 mx-4 mt-5">
  <%- include('boxModal.ejs') %>
  <%- include('sweetBoxAlert.ejs') %>
 
 
-     <div class="col-md-2 mb-4 ">  <a href="#" title="Ajouter Note" class="btn btn-primary position-fixed top-0 end-0 m-3 z-3"
-            data-bs-toggle="modal" id="AddNOte" data-bs-target="#myModalAdd"> <i class="fas fa-upload fa-lg"></i> Publier</a> </div> 
+     <div class="col-md-2 mb-4 ">  <a href="#" title="Ajouter Note" class="btn btn-primary position-fixed  start-0 m-3 "
+            data-bs-toggle="modal" id="AddNote" data-bs-target="#myModalAdd"> <i class="fas fa-upload fa-lg"></i> Publier</a> </div> 
              
 
         <div class="row">
               
           <% if (notes.length> 0) { for(var i=0; i < notes.length; i++) { %>
                            
-             <div class="col-sm-3 mb-4">
+             <div class="col-sm-3 mb-4 ">
                 <div class="card border-primary" style="min-height: 210px">
                   <a href="/dashboard/item-<%= notes[i]._id %>"  class=" text-decoration-none m-1">
                     <h5 class="card-title">
@@ -55,7 +55,7 @@
                     <h4>Commençons par votre première note! <br /> <br />
              
                       <a href="#" title="Ajouter Note" class="btn btn-primary btn-block" 
-            data-bs-toggle="modal" id="AddNOte" data-bs-target="#myModalAdd"><i class="fas fa-upload fa-lg"></i> Créez-en un!</a>
+            data-bs-toggle="modal" data-bs-target="#myModalAdd"><i class="fas fa-upload fa-lg"></i> Créez-en un!</a>
                     </h4>
                   </div>
                 </div>

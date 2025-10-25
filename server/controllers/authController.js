@@ -13,7 +13,8 @@ const users = [];
 exports.register = async (req, res) =>{
     const locals = {
         title : 'Register - NodeJs Notes',
-        description : 'Free NodeJs Notes app.'
+        description : 'Free NodeJs Notes app.',
+        page : 2
     }
     const errors = { }
     res.render('register',  {locals, errors });
@@ -27,7 +28,8 @@ exports.register = async (req, res) =>{
 exports.login = async (req, res) =>{
     const locals = {
         title : 'Login - NodeJs Notes',
-        description : 'Free NodeJs Notes app.'
+        description : 'Free NodeJs Notes app.',
+         page : 3
     }
     const errors = { }
     const user = { }
@@ -39,7 +41,11 @@ exports.login = async (req, res) =>{
  * Add users
  */
 exports.registerAddUserSubmit = async (req, res) => {
-  
+   const locals = {
+                title : 'Register - NodeJs Notes',
+                description : 'Free NodeJs Notes app.',
+                 page : 2
+            }
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         users.push({
@@ -69,10 +75,7 @@ exports.registerAddUserSubmit = async (req, res) => {
             const errors = {
                 emailExist : 'Oops! Cet Email est déjà  utilisée'
             }
-            const locals = {
-                title : 'Register - NodeJs Notes',
-                description : 'Free NodeJs Notes app.'
-            }
+           
           res.render("register", {
             locals, errors
           });
@@ -82,10 +85,7 @@ if(req.body.password != req.body.password2){
   const errors = {
     emailExist : 'Oops! Les deux mot de passe sont différents'
 }
-const locals = {
-    title : 'Register - NodeJs Notes',
-    description : 'Free NodeJs Notes app.'
-}
+
 res.render("register", {
 locals, errors
 });
@@ -94,10 +94,7 @@ locals, errors
   user = await User.create(newUser);
   
   console.log("Utilisateur créer");
-  const locals = {
-      title : 'Login - NodeJs Notes',
-      description : 'Free NodeJs Notes app.'
-  }
+ 
   const errors = {
     emailExist : ''
 }
@@ -121,7 +118,11 @@ locals, errors
  * Connexion 
  */
 exports.loginConnexion = async (req, res) => {
-  
+  const locals = {
+                        title : 'Login - Mot de passe incorrect ',
+                        description : 'Free NodeJs Notes app.',
+                         page : 3
+                    }
     try {
 
           let  user = await User.findOne({ email: req.body.email});
@@ -135,10 +136,7 @@ exports.loginConnexion = async (req, res) => {
                     const errors = {
                         emailExist : "Mot de passe incorrect "
                     }
-                    const locals = {
-                        title : 'Login - Mot de passe incorrect ',
-                        description : 'Free NodeJs Notes app.'
-                    }
+                    
                     const user = { }
                  res.render("login", {
                     locals, user, errors
@@ -167,10 +165,7 @@ exports.loginConnexion = async (req, res) => {
                 emailExist : "Cet email n existe pas"
             }
             const user = { }
-            const locals = {
-                title : 'Login - Utilisateur non trouvé',
-                description : 'Free NodeJs Notes app.'
-            }
+            
           res.render("login", {
             locals, user, errors
           });

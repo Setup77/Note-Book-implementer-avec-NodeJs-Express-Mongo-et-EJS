@@ -1,19 +1,13 @@
-<style>
-  .bg-glass {
-    background-color: hsla(0, 0%, 100%, 0.9) !important;
-    backdrop-filter: saturate(200%) blur(25px);
-  }
-</style>
 
 
 
-<div class="container-fluid container-fluid-custom py-md-5 mb-5">
+<div class="container-fluid  py-md-5 mb-5  login-container d-flex justify-content-center align-items-center">
   <main>
-    <div class="row  justif-content-center">
+    <div class="row justif-content-center ">
 
-      <div class=" col-md-6  col-sm-9 col-lg-6  mb-6 mb-md-0">
+      <div class="mb-6 mb-md-0">
 
-        <div class="card bg-glass">
+        <div class="card bg-glass login-card">
           <div class="card-body px-4 py-5 px-md-5">
             <form action="/login" method="POST" class="form-horizontal well">
               <!-- 2 column grid layout with text inputs for the first and last names -->
@@ -60,16 +54,16 @@
 
               <!-- Email input -->
               <div class="row mt-4 ">
-                <label class="form-label col-md-4 pull-left" for="form3Example3">Email address</label>
-                <div class="form-group col-md-8"> <input type="email" required="require" name="email" id="form3Example3"
+                <label class="form-label col-md-5 pull-left" for="form3Example3">Email address</label>
+                <div class="form-group col-md-7"> <input type="email" required="require" name="email" id="form3Example3"
                     class="form-control" placeholder="Email" />
                 </div>
               </div>
 
               <!-- Password input -->
               <div class="row mt-4 ">
-                <label class="form-label col-md-4 pull-left" for="form3Example4">Mot de passe</label>
-                <div class="form-group col-md-8"> <input type="password" required="require" name="password"
+                <label class="form-label col-md-5 pull-left" for="form3Example4">Mot de passe</label>
+                <div class="form-group col-md-7"> <input type="password" required="require" name="password"
                     id="form3Example4" class="form-control" placeholder=" Password" />
                 </div>
               </div>

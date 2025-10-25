@@ -15,6 +15,7 @@ exports.dashboard = async (req, res) => {
   const locals = {
     title: "Tableau de bord - Application  de prise Notes gratuite",
     description: "Application  de prise Notes gratuite.",
+     page : 6
   };
 
   try {
@@ -81,6 +82,7 @@ exports.dashboardViewPageNote = async (req, res) => {
   const locals = {
     title: "Dashboard- page " + req.params.id,
     description: "Free NodeJS Notes App.",
+     page : 6
   };
 
   try {
@@ -134,6 +136,7 @@ exports.NotesForAnotherUsers = async (req, res) => {
   const locals = {
     title: "Dashboard - For other user",
     description: "Free NodeJS Notes App.",
+     page : 7
   };
 
   if (!req.session.user)
