@@ -15,7 +15,8 @@ exports.homepage = async (req, res) =>{
         description : 'Free NodeJs Notes app.',
         logout : GetVar,
         accessDenied : '',
-        page : 1
+        page : 1,
+        search : ""
     }
 
 
@@ -34,7 +35,8 @@ exports.homepagelogout = async (req, res) =>{
         description : 'Free NodeJs Notes app.',
         logout : 'Vous êtes bien déconnecter',
       accessDenied : '',
-       page : 1
+       page : 1,
+      search : ""
     }
 
       req.session.user = null;
@@ -51,7 +53,8 @@ exports.profil = async (req, res) =>{
        const locals = {
         title : 'Profil - NodeJs Notes',
         description : 'Free NodeJs Notes app.',
-         page : 5
+         page : 5,
+         search : ""
     }
 
 
@@ -101,7 +104,8 @@ exports.users = async (req, res) =>{
     const locals = {
         title : 'Users - Notes',
         description : 'Free NodeJs Notes app.',
-         page : 4
+         page : 4,
+         search : "Rechercher un utilisateur (nom, email)"
     }
       const currentUserId = req.session.user._id;
 

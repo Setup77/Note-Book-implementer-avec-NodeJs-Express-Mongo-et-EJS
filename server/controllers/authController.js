@@ -14,7 +14,8 @@ exports.register = async (req, res) =>{
     const locals = {
         title : 'Register - NodeJs Notes',
         description : 'Free NodeJs Notes app.',
-        page : 2
+        page : 2,
+        search : ""
     }
     const errors = { }
     res.render('register',  {locals, errors });
@@ -29,7 +30,8 @@ exports.login = async (req, res) =>{
     const locals = {
         title : 'Login - NodeJs Notes',
         description : 'Free NodeJs Notes app.',
-         page : 3
+         page : 3,
+         search : ""
     }
     const errors = { }
     const user = { }
@@ -44,7 +46,8 @@ exports.registerAddUserSubmit = async (req, res) => {
    const locals = {
                 title : 'Register - NodeJs Notes',
                 description : 'Free NodeJs Notes app.',
-                 page : 2
+                 page : 2,
+                 search : ""
             }
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
@@ -121,7 +124,8 @@ exports.loginConnexion = async (req, res) => {
   const locals = {
                         title : 'Login - Mot de passe incorrect ',
                         description : 'Free NodeJs Notes app.',
-                         page : 3
+                         page : 3,
+                         search : ""
                     }
     try {
 

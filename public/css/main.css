@@ -204,7 +204,34 @@ background:
       z-index: 3000 !important;
       top: 8% !important;
     }
+
+    .no-results { display: none; }
   
+
+/* Bouton retour scroll*/
+  #btnScrollTop {
+    bottom: 30px;
+    right: 25px;
+    z-index: 1050;
+    display: none; /* caché au chargement */
+    width: 45px;
+    height: 45px;
+  }
+
+  #btnScrollTop i {
+    font-size: 18px;
+    position: relative;
+    right: 9px;
+  }
+
+  @media (max-width: 576px) {
+    #btnScrollTop {
+      bottom: 20px;
+      right: 15px;
+      width: 40px;
+      height: 40px;
+    }
+  }
 
 
 

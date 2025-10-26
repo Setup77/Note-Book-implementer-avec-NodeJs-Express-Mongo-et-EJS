@@ -1,5 +1,6 @@
 
 const Note = require('../models/Notes');
+const User = require('../models/User');
 
 const mongoose = require('mongoose');
 
@@ -9,115 +10,58 @@ const mongoose = require('mongoose');
  */
 exports.dashboard = async (req, res) => {
 
-  let perPage = 10;
-  let page = req.query.page || 1;
-
   const locals = {
     title: "Tableau de bord - Application  de prise Notes gratuite",
     description: "Application  de prise Notes gratuite.",
-     page : 6
+     page : 6,
+     search : "Rechercher vos notes,..."
   };
 
   try {
-    // const notes = await Note.find({});
 
-    //console.log(req.user.id);
-    let id = mongoose.Types.ObjectId(req.session.user._id);
-
-    const notes = await Note.aggregate([
-      { $sort: { updatedAt: -1 } },
-      { $match: { user: id } },
-      {
-        $project: {
-          user: "$user",
-          title: { $substrCP: ["$title", 0, 50] },
-          body: { $substrCP: ["$body", 0, 150] },
-          titleToModify: { $substrCP: ["$title", 0, { $strLenCP: "$title" }] },
-          bodyToModify: { $substrCP: ["$body", 0, { $strLenCP: "$body" }] },
-          createdAt: "$createdAt",
-        },
-      }
-    ])
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec();
-
-       const GetVar = req.session.notification;
-  req.session.notification = null; 
-
-    const count = await Note.count();
-
-    res.render('dashboard/index', {
-      userName: req.session.user.firstName,
-      userId: id,
-      locals,
-      GetVar,
-      notes,
-      layout: "../views/layouts/dashboard",
-      current: page,
-      pages: Math.ceil(count / perPage),
-      perPage,
-      connecter: 1
-    });
-
-
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
-
-
-/**
- * GET /
- * Dashboard User pagination
- */
-exports.dashboardViewPageNote = async (req, res) => {
-
-  let perPage = 10;
-  let page = req.params.id || 1;
   let id = mongoose.Types.ObjectId(req.session.user._id);
+       // Requête d’agrégation (user + notes)
+   const notes = await Note.aggregate([
+  { $match: { user: new mongoose.Types.ObjectId(id) } },
+  { $sort: { updatedAt: -1 } },
+  {
+    $lookup: {
+      from: "users",            // nom de la collection Mongo
+      localField: "user",       // champ dans notes
+      foreignField: "_id",      // champ correspondant dans users
+      as: "userInfo"
+    }
+  },
+  { $unwind: "$userInfo" },
+  {
+    $project: {
+      user: "$user",
+      usernote: "$userInfo", // on inclut toutes les infos du user
+      title: { $substrCP: ["$title", 0, 50] },
+      body: { $substrCP: ["$body", 0, 150] },
+      titleToModify: { $substrCP: ["$title", 0, { $strLenCP: "$title" }] },
+      bodyToModify: { $substrCP: ["$body", 0, { $strLenCP: "$body" }] },
+      createdAt: 1,
+      updatedAt: 1
+    }
+  }
+]);
 
-  const locals = {
-    title: "Dashboard- page " + req.params.id,
-    description: "Free NodeJS Notes App.",
-     page : 6
-  };
+  var  GetVar = req.session.notification;
+  req.session.notification = null;
+ var  userId  = id;
 
-  try {
-    // Mongoose "^7.0.0 Update
-    const notes = await Note.aggregate([
-      { $sort: { updatedAt: -1 } },
-      { $match: { user: id } },
-      {
-        $project: {
-          user: "$user",
-          title: { $substrCP: ["$title", 0, 50] },
-          body: { $substrCP: ["$body", 0, 150] },
-          titleToModify: { $substrCP: ["$title", 0, { $strLenCP: "$title" }] },
-          bodyToModify: { $substrCP: ["$body", 0, { $strLenCP: "$body" }] },
-        },
-      }
-    ])
-      .skip(perPage * page - perPage)
-      .limit(perPage)
-      .exec();
-
-    const count = await Note.count();
-    const GetVar = 0;
     res.render('dashboard/index', {
       userName: req.session.user.firstName,
       userId: id,
       locals,
       GetVar,
       notes,
+      userId,
       layout: "../views/layouts/dashboard",
-      current: page,
-      pages: Math.ceil(count / perPage),
-      perPage,
       connecter: 1
     });
+
 
   } catch (error) {
     console.log(error);
@@ -136,7 +80,8 @@ exports.NotesForAnotherUsers = async (req, res) => {
   const locals = {
     title: "Dashboard - For other user",
     description: "Free NodeJS Notes App.",
-     page : 7
+     page : 7,
+     search : "Recherche des notes,.."
   };
 
   if (!req.session.user)

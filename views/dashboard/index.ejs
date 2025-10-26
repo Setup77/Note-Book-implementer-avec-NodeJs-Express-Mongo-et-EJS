@@ -1,105 +1,204 @@
-<div class="pb-5 mb-5 mx-4 mt-5">
- <%- include('boxModal.ejs') %>
+
+<%- include('boxModal.ejs') %>
  <%- include('sweetBoxAlert.ejs') %>
 
+<script src="http://localhost:5000/js/pagination.js"></script>
 
      <div class="col-md-2 mb-4 ">  <a href="#" title="Ajouter Note" class="btn btn-primary position-fixed  start-0 m-3 "
             data-bs-toggle="modal" id="AddNote" data-bs-target="#myModalAdd"> <i class="fas fa-upload fa-lg"></i> Publier</a> </div> 
-             
+ <!-- Pagination du haut -->
+<nav class="mt-4" aria-label="Pagination top">
+  <ul id="paginationTop" class="pagination justify-content-center mb-0"></ul>
+</nav>      
 
-        <div class="row">
-              
-          <% if (notes.length> 0) { for(var i=0; i < notes.length; i++) { %>
-                           
-             <div class="col-sm-3 mb-4 ">
-                <div class="card border-primary" style="min-height: 210px">
-                  <a href="/dashboard/item-<%= notes[i]._id %>"  class=" text-decoration-none m-1">
-                    <h5 class="card-title">
-                      <%= notes[i].title %>
-                    </h5>
-                  </a>
-                  <p class="card-text mt-3 p-1">
-                    <%= notes[i].body %>
-                  </p>
-                  <% if (connecter==1 && notes[i].user.toString()==userId.toString() ) { %>
-                    <div class="row">
-                      <div class="col-md-3">
-                        <a href="#" title="Edit" class="text-success ps-3" data-item-description="<%= notes[i].bodyToModify %>"
-                          data-item-id="<%= notes[i]._id %>" data-item-name="<%= notes[i].titleToModify %>"
-                          data-bs-toggle="modal" id="ModifyButton" data-bs-target="#myModalModify"><i
-                            class="fas fa-edit fa-lg"></i></a>
-                      </div>
-                       <div class="col-md-6"> 
-                         <small title="<%=  dayjs(notes[i].createdAt).format('D MMMM YYYY') %>"><%=  dayjs(notes[i].createdAt).fromNow() %></small>
-                        </div>   
-                         <div class="col-md-3">
-                        <a href="#" title="Delete" class="text-danger float-end pe-3 DelNote "
-                          data-item-id="<%= notes[i]._id %>" data-item-name="<%= notes[i].titleToModify %>"
-                          data-bs-toggle="modal" id="deleteButton" data-bs-target="#myModal"><i
-                            class="fas fa-trash-alt fa-lg"></i></a>
-                      </div>
-                    </div>
-                    <% } %>
-                </div>
-              </div>
-
-              <% }} else { %>
-
-                <div class="row">
-
-                  <div class="col-3">
-                    <img src="/img/human-3.svg" alt="Human pointing hand tos    rd a crate button">
-                  </div>
-                  <div class="col mt-md-4">
-                    <h2>Okay...</h2>
-                    <h4>Commençons par votre première note! <br /> <br />
-             
-                      <a href="#" title="Ajouter Note" class="btn btn-primary btn-block" 
-            data-bs-toggle="modal" data-bs-target="#myModalAdd"><i class="fas fa-upload fa-lg"></i> Créez-en un!</a>
-                    </h4>
-                  </div>
-                </div>
-
-                <% } %>
-        </div>
-
-
-        <% if(notes.length> perPage) { %>
-          <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center mt-5">
-              <% if(current==1) { %>
-                <li class="page-item"><a class="page-link" href="#">Pécédent</a></li>
-                <% } else { %>
-                  <li class="page-item"><a class="page-link" href="/dashboard">Premier</a></li>
-                  <% } %>
-                    <% var i=(Number(current)> 5 ? Number(current) - 4 : 1) %>
-                      <% if (i !==1 ) { %>
-                        <li class="page-item"><a class="page-link" href="#">...</a></li>
-                        <% } %>
-                          <% for (; i <=(Number(current) + 4) && i <=pages; i++) { %>
-                            <% if(i==current ) { %>
-                              <li class="page-item"><a class="page-link" href="#">
-                                  <%= i %>
-                                </a></li>
-                              <% } else { %>
-                                <li class="page-item"><a class="page-link" href="/dashboard/page-<%= i %>">
-                                    <%= i %>
-                                  </a></li>
-                                <% } %>
-                                  <% if(i==Number(current) + 4 && i < pages) { %>
-                                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                                    <% } %>
-                                      <% } %>
-                                        <% if (current==pages) { %>
-                                          <li class="page-item disabled"><a class="page-link">Dernier</a></li>
-                                          <% } else { %>
-                                            <li class="page-item"><a href="/dashboard/page-<%= pages %>"
-                                                class="page-link">Dernier</a></li>
-                                            <% } %>
-            </ul>
-          </nav>
-
-          <% } %>
-
-
+<!-- Liste responsive : -->
+<div id="notes-container" class="row  g-3 pb-5 mb-5 mx-4 mt-5">
+<!-- JS injection des notes ici -->
 </div>
+
+
+<div id="no-results" class="alert alert-warning mt-4 no-results">Aucune de vos notes trouvée.</div>
+<!-- Pagination du haut -->
+<nav class="mt-4" aria-label="Pagination top">
+  <ul id="paginationBottom" class="pagination justify-content-center mb-0"></ul>
+</nav>
+
+
+<script>
+const notes = <%- JSON.stringify(notes) %>;
+const connecter = <%- connecter %>;
+const userId = "<%- userId %>";
+
+  var searchInput = document.getElementById('search');
+const container = document.getElementById('notes-container');
+const noResults = document.getElementById('no-results');
+
+
+
+// Utilitaire : initials à partir du nom
+function initials(title) {
+return title.split(' ').map(s => s[0] || '').slice(0,2).join('').toUpperCase();
+}
+
+
+// Variables globales
+let currentPage = 1;
+const PAGE_SIZE = 9; // nombre de notes par page
+const paginationTop = document.getElementById('paginationTop');
+const paginationBottom = document.getElementById('paginationBottom');
+
+// Fonction principale pour afficher les notes
+function renderNotes(list) {
+  container.innerHTML = '';
+
+  if (!list.length) {
+    noResults.style.display = 'block';
+    paginationTop.innerHTML = '';
+    paginationBottom.innerHTML = '';
+    return;
+  }
+
+  noResults.style.display = 'none';
+
+  const totalPages = Math.ceil(list.length / PAGE_SIZE);
+  if (currentPage > totalPages) currentPage = totalPages || 1;
+
+  // Découpage de la liste selon la page
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageItems = list.slice(start, start + PAGE_SIZE);
+
+  // Création des notes visibles
+pageItems.forEach(note => {
+// Création de la colonne principale
+const col = document.createElement('div');
+col.className = 'col-md-4 mb-4';
+
+// ----- CARTE -----
+const card = document.createElement('div');
+card.className = 'card border-primary';
+card.style.minHeight = '210px';
+
+// ----- LIEN DU TITRE -----
+const link = document.createElement('a');
+link.title = `Publié par ${note.usernote.lastName} ${note.usernote.firstName}`;
+link.href = `/dashboard/item-${note._id}`;
+link.className = 'text-decoration-none m-1';
+
+// ----- TITRE -----
+const title = document.createElement('h5');
+title.className = 'card-title';
+title.textContent = note.title;
+
+// On place le titre dans le lien
+link.appendChild(title);
+
+// ----- TEXTE DE LA NOTE -----
+const body = document.createElement('p');
+body.className = 'card-text mt-3 p-1';
+body.textContent = note.body;
+
+// On ajoute le lien et le texte à la carte
+card.appendChild(link);
+card.appendChild(body);
+
+// ----- SI L’UTILISATEUR EST CONNECTÉ ET EST PROPRIÉTAIRE -----
+if (connecter == 1 && note.user.toString() == userId.toString()) {
+  
+  // Ligne de boutons et infos
+  const row = document.createElement('div');
+  row.className = 'row align-items-center mt-2';
+  
+  // --- Colonne : Edit ---
+  const colEdit = document.createElement('div');
+  colEdit.className = 'col-md-3';
+  const editLink = document.createElement('a');
+  editLink.href = '#';
+  editLink.title = 'Modifier';
+  editLink.className = 'text-success ps-3';
+  editLink.dataset.itemDescription = note.bodyToModify;
+  editLink.dataset.itemId = note._id;
+  editLink.dataset.itemName = note.titleToModify;
+  editLink.dataset.bsToggle = 'modal';
+  editLink.dataset.bsTarget = '#myModalModify';
+  editLink.innerHTML = '<i class="fas fa-edit fa-lg"></i>';
+  colEdit.appendChild(editLink);
+  
+  // --- Colonne : Date ---
+  const colDate = document.createElement('div');
+  colDate.className = 'col-md-6';
+  const small = document.createElement('small');
+  /*small.title = dayjs(note.createdAt).format('D MMMM YYYY');
+  small.textContent = dayjs(note.createdAt).fromNow();*/
+   small.textContent = formatFacebookDate(note.createdAt);
+  colDate.appendChild(small);
+  
+  // --- Colonne : Delete ---
+  const colDelete = document.createElement('div');
+  colDelete.className = 'col-md-3';
+  const delLink = document.createElement('a');
+  delLink.href = '#';
+  delLink.title = 'Supprimer';
+  delLink.className = 'text-danger float-end pe-3 DelNote';
+  delLink.dataset.itemId = note._id;
+  delLink.dataset.itemName = note.titleToModify;
+  delLink.dataset.bsToggle = 'modal';
+  delLink.dataset.bsTarget = '#myModal';
+  delLink.innerHTML = '<i class="fas fa-trash-alt fa-lg"></i>';
+  colDelete.appendChild(delLink);
+  
+  // On assemble la ligne
+  row.appendChild(colEdit);
+  row.appendChild(colDate);
+  row.appendChild(colDelete);
+  
+  // On ajoute la ligne à la carte
+  card.appendChild(row);
+}
+
+// On assemble la colonne
+col.appendChild(card);
+container.appendChild(col);
+});
+
+// Met à jour les 2 barres de pagination
+  renderPagination(totalPages, list);
+}
+
+
+function applyFilter(term = '') {
+  const filtered = notes.filter(note =>
+    note.title.toLowerCase().includes(term) ||
+    note.body.toLowerCase().includes(term)
+  );
+  renderNotes(filtered);
+  renderPagination();
+}
+
+
+
+// événements de recherches principal et offcanvas
+   searchInput.addEventListener('input', (e) => {
+      const term = e.target.value.trim().toLowerCase();
+      applyFilter(term);
+    });
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+  const searchInputOffcanvas = document.getElementById('searchInputOffcanvas');
+
+  if (searchInputOffcanvas) {
+    searchInputOffcanvas.addEventListener('input', (e) => {
+      const term = e.target.value.trim().toLowerCase();
+      applyFilter(term);
+    });
+  }
+});
+
+
+//---Initialisation des notes
+document.addEventListener('DOMContentLoaded', () => {
+  renderNotes(notes);
+});
+
+</script>
+
