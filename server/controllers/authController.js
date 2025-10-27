@@ -150,13 +150,21 @@ exports.loginConnexion = async (req, res) => {
                 else{
                     //----connexion au dashbord
 
-                    req.session.user = user;
+                  //  req.session.user = user;
                      req.session.notification = 4;
-                    console.log(req.session.user);
-                  //  req.session.user.id = user._id ;
+
+                     // Creation de la session d'utilisateur connecté
+req.session.user = {
+  _id: user._id.toString(),  //  toujours une string
+  firstName: user.firstName,
+  lastName: user.lastName,
+  email: user.email,
+  avatar: user.avatar
+};
+
+console.log("✅ Session créée :", req.session.user);
+
                     req.session.save();
-                    
-                
                     res.redirect('/dashboard');
                
                 }

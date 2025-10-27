@@ -1,3 +1,4 @@
+//console.log(pagee);
 // Fonction de pagination
 function renderPagination(totalPages, list) {
   paginationTop.innerHTML = '';
@@ -13,7 +14,7 @@ function renderPagination(totalPages, list) {
     prevLi.onclick = () => {
       if (currentPage > 1) {
         currentPage--;
-        renderNotes(list);
+        renderItems(list);
         scrollToTop();
       }
     };
@@ -26,7 +27,7 @@ function renderPagination(totalPages, list) {
       li.innerHTML = `<button class="page-link">${p}</button>`;
       li.onclick = () => {
         currentPage = p;
-        renderNotes(list);
+        renderItems(list);
         scrollToTop();
       };
       paginationEl.appendChild(li);
@@ -39,7 +40,7 @@ function renderPagination(totalPages, list) {
     nextLi.onclick = () => {
       if (currentPage < totalPages) {
         currentPage++;
-        renderNotes(list);
+        renderItems(list);
         scrollToTop();
       }
     };

@@ -93,7 +93,7 @@ app.use(bodyParser.json());
 //-Routes
 app.use('/', require('./server/routes/auth'));
 app.use('/', require('./server/routes/index'));
-app.use('/', require('./server/routes/dasboard'));
+app.use('/', require('./server/routes/dasboard')); // ---qui prefixe les longue route comme /notes-for-all-users
 
 app.locals.dayjs = dayjs;
 

@@ -3,23 +3,40 @@
  <%- include('sweetBoxAlert.ejs') %>
 
 <script src="http://localhost:5000/js/pagination.js"></script>
-
-     <div class="col-md-2 mb-4 ">  <a href="#" title="Ajouter Note" class="btn btn-primary position-fixed  start-0 m-3 "
+<div class="d-flex justify-content-center align-items-center">
+  <h2 class="g-3 pb-0 mb-5 text-center">
+<% if(anoteruser == 1 || anoteruser == 2) { %>
+    Notes de <%- usernote.firstName %>
+  </h2>
+</div>
+ <% } else {  %>
+Notes de tous les utilisateurs
+ <%  } %>   </h2>
+</div>
+<% if (session && session.user) { %>
+     <div class="col-md-2 mb-1 ">  <a href="#" title="Ajouter Note" class="btn btn-primary position-fixed  start-0 m-3 "
             data-bs-toggle="modal" id="AddNote" data-bs-target="#myModalAdd"> <i class="fas fa-upload fa-lg"></i> Publier</a> </div> 
- <!-- Pagination du haut -->
-<nav class="mt-4" aria-label="Pagination top">
+  <%  } %> 
+            <!-- Pagination du haut -->
+<nav class="mt-2" aria-label="Pagination top">
   <ul id="paginationTop" class="pagination justify-content-center mb-0"></ul>
 </nav>      
 
 <!-- Liste responsive : -->
-<div id="notes-container" class="row  g-3 pb-5 mb-5 mx-4 mt-5">
+<div id="notes-container" class="row  g-3 pb-5 mb-5 mx-4 mt-1">
 <!-- JS injection des notes ici -->
 </div>
 
 
-<div id="no-results" class="alert alert-warning mt-4 no-results">Aucune de vos notes trouvée.</div>
+<div id="no-results" class="alert alert-warning mt-4 no-results text-center">
+  <% if(anoteruser == 2) { %>
+  Aucune de vos notes trouvées.
+   <% } else {  %>
+ Aucune note trouvée.
+ <%  } %>
+</div>
 <!-- Pagination du haut -->
-<nav class="mt-4" aria-label="Pagination top">
+<nav class="mt-2" aria-label="Pagination top">
   <ul id="paginationBottom" class="pagination justify-content-center mb-0"></ul>
 </nav>
 
@@ -48,7 +65,7 @@ const paginationTop = document.getElementById('paginationTop');
 const paginationBottom = document.getElementById('paginationBottom');
 
 // Fonction principale pour afficher les notes
-function renderNotes(list) {
+function renderItems(list) {
   container.innerHTML = '';
 
   if (!list.length) {
@@ -67,6 +84,7 @@ function renderNotes(list) {
   const start = (currentPage - 1) * PAGE_SIZE;
   const pageItems = list.slice(start, start + PAGE_SIZE);
 
+  const col = document.createElement('div');
   // Création des notes visibles
 pageItems.forEach(note => {
 // Création de la colonne principale
@@ -170,7 +188,7 @@ function applyFilter(term = '') {
     note.title.toLowerCase().includes(term) ||
     note.body.toLowerCase().includes(term)
   );
-  renderNotes(filtered);
+  renderItems(filtered);
   renderPagination();
 }
 
@@ -197,7 +215,7 @@ function applyFilter(term = '') {
 
 //---Initialisation des notes
 document.addEventListener('DOMContentLoaded', () => {
-  renderNotes(notes);
+  renderItems(notes);
 });
 
 </script>

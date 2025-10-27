@@ -19,14 +19,13 @@
     </a>
           <!-- Liens de gauche -->
     <ul class="navbar-nav d-none d-lg-flex flex-row ms-auto">
-        <li class="nav-item me-5" >
-            <% if (session && session.user) { %>
+         <% if (session && session.user) { %>
+           <li class="nav-item me-5" >
    <a class="nav-link <%= locals.page == 6 ? 'active fw-bold' : '' %>"  active fw-bold" href="/dashboard"> <i class="fa fa-user"></i> <%= session.user.firstName %></a>
-<% }  %>
-        </li>
+        </li><% }  %>
            <li class="nav-item me-5"><a href="/users"  class="nav-link <%= locals.page == 4 ? 'active' : '' %>"> <i class="fa fa-users"></i> Membres</a></li> 
         
-           <li class="nav-item"><a href="/consulter-tous-les-notes" title="Tous les notes des utilisateurs" class="nav-link <%= locals.page === '7' ? 'active' : '' %>"><i class="fa fa-eye"></i> Consulter</a></li> 
+           <li class="nav-item"><a href="/notes-for-all-users" title="Tous les notes des utilisateurs" class="nav-link <%= locals.page === '7' ? 'active' : '' %>"><i class="fa fa-eye"></i> Consulter</a></li> 
       
       </ul>
  <% if (locals.page == 6 || locals.page == 7 || locals.page == 4) { %>
@@ -75,7 +74,7 @@
    <% }  %>
   <li class="nav-item"><a href="/users" class="nav-link text-white <%= locals.page == 4 ? 'active' : '' %>"> <i class="fa fa-users"></i> Membres</a></li> 
        <hr class="border-secondary">  
-  <li class="nav-item"><a href="/consulter-tous-les-notes" title="Tous les notes des utilisateurs" class="nav-link text-white <%= locals.page == 7 ? 'active' : '' %>"><i class="fa fa-eye"></i> Consulter</a></li> 
+  <li class="nav-item"><a href="/dashboard/notes-for-all-users" title="Tous les notes des utilisateurs" class="nav-link text-white <%= locals.page == 7 ? 'active' : '' %>"><i class="fa fa-eye"></i> Consulter</a></li> 
       </ul>
       <% if (locals.page == 6 || locals.page == 7 || locals.page == 4) { %>
 <hr class="border-secondary">

@@ -67,8 +67,9 @@ try {
       return res.status(400).json({ success: false, error: "ID invalide" });
     }
     if(!req.session.user){
-      req.session.user = {_id: ""};
-
+       userSession = {_id: ""};
+    }else{
+      userSession = req.session.user;
     }
 
 const user = await User.findById(id);
@@ -80,7 +81,7 @@ res.render('profil', {
   locals, 
   user, 
   id,
-  userSession: req.session.user});
+  userSession});
 }else{
   req.session.notification = "Utilisateur non trouvé";
     res.redirect("/users");
@@ -107,12 +108,39 @@ exports.users = async (req, res) =>{
          page : 4,
          search : "Rechercher un utilisateur (nom, email)"
     }
+     const currentUserId = null;
+     if(req.session.user){
       const currentUserId = req.session.user._id;
+     }
+
+     console.log(currentUserId);
 
      try {
-    //const users = await User.find().lean(); // lean() = renvoie des objets JS simples - Affiche tous les users
-    //console.log(users);
-    const users = await User.find({ _id: { $ne: currentUserId } });
+ 
+    //const users = await User.find({ _id: { $ne: currentUserId } });
+const users = await User.aggregate([
+  { $match: { _id: { $ne: new mongoose.Types.ObjectId(currentUserId) } } },
+  {
+    $lookup: {
+      from: "notes",           // nom de la collection Mongo
+      localField: "_id",       // champ dans User
+      foreignField: "user",    // champ dans Note
+      as: "userNotes"
+    }
+  },
+  {
+    $addFields: {
+      noteCount: { $size: "$userNotes" } // ajoute le nombre de notes
+    }
+  },
+  {
+    $project: {
+      password: 0, // tu peux exclure le mot de passe
+      userNotes: 0 // on n’a besoin que du count
+    }
+  }
+]);
+
     res.render('users', {locals, users,GetVar }); // on envoie les utilisateurs à la vue EJS
   } catch (err) {
     console.error(err);
