@@ -13,6 +13,7 @@ router.delete('/dashboard/item-delete-:id', isLoggedIn, dashboardController.dash
 router.post('/dashboard/add', isLoggedIn, dashboardController.dashboardAddNoteSubmit);
 router.get('/dashboard/notes-:id', dashboardController.NoteForAnotherUser);
 router.get('/notes-for-all-users', dashboardController.notesForAllUsers);
+router.get('/dashboard/note-:id', dashboardController.dashboardViewNote);
 
 
 

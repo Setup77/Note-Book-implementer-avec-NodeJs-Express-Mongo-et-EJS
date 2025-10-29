@@ -292,3 +292,43 @@ exports.dashboardAddNoteSubmit = async (req, res) => {
   }
 };
 
+/**
+ * GET /
+ * View Specific Note
+ */
+exports.dashboardViewNote = async (req, res) => {
+  //  console.log(req.user.id);
+   const note = await Note.findOne({
+  _id: req.params.id
+})
+.populate('user', '_id firstName lastName email avatar role') // On récupère les infos du publieur
+.lean();
+
+   const locals = {
+        title : 'Note -'+ note.title,
+        description : 'Free NodeJs Notes app.',
+         page : 8,
+         search : ""
+    }
+
+     var userName = null;
+    if (req.session.user) {
+      userName = req.session.user.firstName;
+    }
+ 
+  if (note) {
+    res.render("dashboard/view-note", {
+      userName,
+      locals,
+      GetVar: "",
+      note,
+      noteID: req.params.id,
+      layout: "../views/layouts/dashboard",
+      connecter: 0
+    });
+  } else {
+     req.session.notification = "Cette note n'existe pas";
+    res.redirect("/notes-for-all-users");
+  }
+};
+

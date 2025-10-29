@@ -233,6 +233,18 @@ background:
     }
   }
 
+   .card {
+    transition: transform .2s ease-in-out;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+  }
+
+    .btn-sm {
+    border-radius: 50px;
+    padding: 0.4rem 1rem;
+  }
+
 
 
 

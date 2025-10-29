@@ -99,7 +99,7 @@ card.style.minHeight = '210px';
 // ----- LIEN DU TITRE -----
 const link = document.createElement('a');
 link.title = `Publié par ${note.usernote.lastName} ${note.usernote.firstName}`;
-link.href = `/dashboard/item-${note._id}`;
+link.href = `/dashboard/note-${note._id}`;
 link.className = 'text-decoration-none m-1';
 
 // ----- TITRE -----
@@ -120,7 +120,7 @@ card.appendChild(link);
 card.appendChild(body);
 
 // ----- SI L’UTILISATEUR EST CONNECTÉ ET EST PROPRIÉTAIRE -----
-if (connecter == 1 && note.user.toString() == userId.toString()) {
+
   
   // Ligne de boutons et infos
   const row = document.createElement('div');
@@ -143,10 +143,9 @@ if (connecter == 1 && note.user.toString() == userId.toString()) {
   
   // --- Colonne : Date ---
   const colDate = document.createElement('div');
-  colDate.className = 'col-md-6';
+  colDate.className = 'col-md-6 text-muted';
   const small = document.createElement('small');
-  /*small.title = dayjs(note.createdAt).format('D MMMM YYYY');
-  small.textContent = dayjs(note.createdAt).fromNow();*/
+
    small.textContent = formatFacebookDate(note.createdAt);
   colDate.appendChild(small);
   
@@ -163,16 +162,17 @@ if (connecter == 1 && note.user.toString() == userId.toString()) {
   delLink.dataset.bsTarget = '#myModal';
   delLink.innerHTML = '<i class="fas fa-trash-alt fa-lg"></i>';
   colDelete.appendChild(delLink);
-  
-  // On assemble la ligne
+   // On assemble la ligne
+  if (connecter == 1 && note.user.toString() == userId.toString()) {
   row.appendChild(colEdit);
   row.appendChild(colDate);
   row.appendChild(colDelete);
-  
+}
+else{
+  row.appendChild(colDate);
+}
   // On ajoute la ligne à la carte
   card.appendChild(row);
-}
-
 // On assemble la colonne
 col.appendChild(card);
 container.appendChild(col);
